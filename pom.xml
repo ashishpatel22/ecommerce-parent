@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.akp</groupId>
+    <artifactId>ecommerce-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>ecommerce-parent</name>
+    <description>This is parent project for ecommerce application development</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>eshopping-service</module>
+    </modules>
+</project>
