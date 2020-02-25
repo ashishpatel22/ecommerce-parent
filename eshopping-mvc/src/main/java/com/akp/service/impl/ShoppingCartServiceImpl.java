@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Shopping Cart is implemented with a Map, and as a session bean
@@ -83,15 +84,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
      */
     @Override
     public void checkout() throws NotEnoughProductsInStockException {
-        Product product;
+        Optional<Product> product;
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             // Refresh quantity for every product before checking
-            product = productRepository.findOne(entry.getKey().getId());
-            if (product.getQuantity() < entry.getValue())
-                throw new NotEnoughProductsInStockException(product);
-            entry.getKey().setQuantity(product.getQuantity() - entry.getValue());
+            product = productRepository.findById(entry.getKey().getId());
+            if (product.get().getQuantity() < entry.getValue())
+                throw new NotEnoughProductsInStockException(product.get());
+            entry.getKey().setQuantity(product.get().getQuantity() - entry.getValue());
         }
-        productRepository.save(products.keySet());
+        productRepository.saveAll(products.keySet());
         productRepository.flush();
         products.clear();
     }

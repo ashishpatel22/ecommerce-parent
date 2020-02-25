@@ -42,5 +42,4 @@ public class Pager {
     public boolean indexOutOfBounds() {
         return this.getPageIndex() < 0 || this.getPageIndex() > this.getTotalElements();
     }
-
 }

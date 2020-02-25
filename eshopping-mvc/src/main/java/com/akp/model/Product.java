@@ -1,5 +1,6 @@
 package com.akp.model;
 
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "product")
+@Data
 public class Product {
 
     @Id
@@ -19,7 +21,7 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     @Length(min = 3, message = "*Name must have at least 5 characters")
     private String name;
 
@@ -34,45 +36,9 @@ public class Product {
     @DecimalMin(value = "0.00", message = "*Price has to be non negative number")
     private BigDecimal price;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal unitPrice) {
-        this.price = unitPrice;
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "region_id", nullable = false)
+    private Region region;
 
     @Override
     public boolean equals(Object o) {
@@ -87,5 +53,14 @@ public class Product {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description ='" + description + '\'' +
+                ", region ='" + region + '\'' +
+                '}';
     }
 }

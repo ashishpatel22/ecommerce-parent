@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 /**
@@ -29,7 +30,7 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public ModelAndView home(@RequestParam("page") Optional<Integer> page) {
+    public ModelAndView home(@RequestParam("page") Optional<Integer> page, HttpSession session) {
 
         /**
          * Evaluate page. If requested parameter is null or less than 0 (to
@@ -38,7 +39,7 @@ public class HomeController {
          * */
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        Page<Product> products = productService.findAllProductsPageable(new PageRequest(evalPage, 5));
+        Page<Product> products = productService.findAllProductsPageable(PageRequest.of(evalPage, 5));
         Pager pager = new Pager(products);
 
         ModelAndView modelAndView = new ModelAndView();
