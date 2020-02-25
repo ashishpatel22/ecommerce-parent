@@ -25,3 +25,5 @@ nbdist/
 
 ### backup files created
 .bak
+
+/target/

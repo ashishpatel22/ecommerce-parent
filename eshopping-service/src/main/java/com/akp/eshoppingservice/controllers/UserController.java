@@ -26,8 +26,9 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUserByUserName(@PathVariable("id") String username) {
-        User user = (User) userService.loadUserByUsername(username);
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        User user = userService.findById(id);
 
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -37,6 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<User> addUser(@RequestBody User user) {
 
         User _user = (User) userService.loadUserByUsername(user.getUsername());
@@ -49,10 +51,12 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") String userId, @RequestBody User user) {
-        Optional<User> _user = userService.findById(userId);
+    @PreAuthorize("hasRole('MODERATOR')")
+    public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
+        User _user = userService.findById(id);
 
-        if (_user.isPresent()) {
+        if (_user != null) {
+            user.setId(id);
             return new ResponseEntity<>(userService.add(user), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -61,9 +65,9 @@ public class UserController {
 
     @DeleteMapping("/user/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<HttpStatus> deleteUserById(@PathVariable("userId") String userId) {
+    public ResponseEntity<HttpStatus> deleteUserById(@PathVariable("id") Long id) {
         try {
-            userService.deleteById(userId);
+            userService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);

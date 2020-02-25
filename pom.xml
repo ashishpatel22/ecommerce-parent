@@ -12,5 +12,6 @@
 
     <modules>
         <module>eshopping-service</module>
+        <module>eshopping-mvc</module>
     </modules>
 </project>

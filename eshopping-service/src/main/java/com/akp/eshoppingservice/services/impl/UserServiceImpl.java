@@ -5,17 +5,16 @@ import com.akp.eshoppingservice.repository.UserRepository;
 import com.akp.eshoppingservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
-@Service(value = "userService")
-public class UserServiceImpl implements UserDetailsService, UserService {
+@Service
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -30,8 +29,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public User findById(Long id) {
+
+        return this.userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User id: " + id + " not found"));
     }
 
     @Override
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username: " + username + " not found"));
     }

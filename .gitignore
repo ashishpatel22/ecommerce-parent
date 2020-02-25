@@ -53,3 +53,6 @@ hs_err_pid*
 # Exclude target folders 
 
 /eshopping-service/target/
+/eshopping-mvc/target/
+# Exclude .bak files
+.bak
