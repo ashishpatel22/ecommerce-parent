@@ -1,6 +1,7 @@
 package com.akp.service.impl;
 
 import com.akp.model.Product;
+import com.akp.model.Region;
 import com.akp.repository.ProductRepository;
 import com.akp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> findAllProductsPageable(Pageable pageable) {
         return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> findAllProductsByRegionPageable(Region region, Pageable pageable) {
+        return productRepository.findAllByRegion(region, pageable);
     }
 
     @Override

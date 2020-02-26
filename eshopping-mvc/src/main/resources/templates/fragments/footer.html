@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-sm-12 text-center">
                 <span sec:authorize="isAuthenticated()">
-                | Logged user: <span sec:authentication="name"></span> |
+                | Logged user: <span sec:authentication="principal.username"></span> |
                 Roles: <span sec:authentication="principal.authorities"></span> |
                 <a th:href="@{/logout}">Sign Out</a>
             </span>
